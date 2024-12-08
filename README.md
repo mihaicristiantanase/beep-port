@@ -28,8 +28,6 @@ Change
 
     beep-port:*port*
 
-.
-
 For example, add
 ```sh
   --eval "(setf beep-port:*port* 8080)"
