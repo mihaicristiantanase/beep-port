@@ -24,8 +24,8 @@
         (needs-update-p t))
     (cond
       ((string-equal *prev* current) (setf needs-update-p nil))
-      ((or (null *prev*) (zerop (length *prev*))) (beep 'start-sound))
       ((or (null current) (zerop (length current))) (beep 'end-sound))
+      ((or (null *prev*) (zerop (length *prev*))) (beep 'start-sound))
       ((cl-ppcre:scan "^.*LISTEN.*$" current) (beep 'just-listening-sound))
       (t (beep 'change-sound)))
     (if needs-update-p
