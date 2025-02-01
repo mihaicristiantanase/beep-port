@@ -13,7 +13,7 @@
 (defun beep (sound)
   (let ((something-to-say (ecase sound
                             (start-sound "COMMENCE")
-                            (change-sound "CHANGE")
+                            (change-sound "") ; silence
                             (end-sound "C'EST FINI [[slnc 500]] LA COMÉDIE")
                             (just-listening-sound "ÉCOUTE"))))
     (let ((cmd (format nil "say -v Amélie \"~a\"" something-to-say)))
