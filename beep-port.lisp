@@ -19,15 +19,28 @@
     (let ((cmd (format nil "say -v Amélie \"~a\"" something-to-say)))
       (uiop:run-program cmd))))
 
+(defun important-statuses-only (buf)
+  "Documentation for important-statuses-only with parameters buf"
+  (format nil "~{~a~%~}"
+          (remove-if (lambda (line) (or (search "FIN_WAIT_2" line)
+                                        (search "CLOSE_WAIT" line)))
+                     (cl-ppcre:split "
+" buf))))
+
 (defun check-it (port)
-  (let ((current (scan-port port))
+  (let ((current (important-statuses-only (scan-port port)))
         (needs-update-p t))
     (cond
-      ((string-equal *prev* current) (setf needs-update-p nil))
-      ((or (null current) (zerop (length current))) (beep 'end-sound))
-      ((or (null *prev*) (zerop (length *prev*))) (beep 'start-sound))
-      ((cl-ppcre:scan "^.*LISTEN.*$" current) (beep 'just-listening-sound))
-      (t (beep 'change-sound)))
+      ((string-equal *prev* current)
+       (setf needs-update-p nil))
+      ((or (null current) (zerop (length current)))
+       (beep 'end-sound))
+      ((or (null *prev*) (zerop (length *prev*)))
+       (beep 'start-sound))
+      ((cl-ppcre:scan "^.*LISTEN.*$" current)
+       (beep 'just-listening-sound))
+      (t
+       (beep 'change-sound)))
     (if needs-update-p
         (format t "====================~%~a~%" current))
     (setf *prev* current)))
