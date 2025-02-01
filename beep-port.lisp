@@ -3,7 +3,7 @@
 (in-package #:beep-port)
 
 (defun scan-port (port)
-  (let ((cmd (format nil "netstat -tanlp tcp | egrep ~a" port)))
+  (let ((cmd (format nil "netstat -tanlp tcp | egrep -w ~a" port)))
     (uiop:run-program cmd :output '(:string :stripped t)
                           :error-output :output
                           :ignore-error-status t)))
